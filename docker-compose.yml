@@ -1,0 +1,30 @@
+﻿version: '3.4'
+
+networks:
+  backend:
+
+services: 
+  clientdb:
+    container_name: clientsbd
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Gato__12
+    networks:
+      - backend
+    ports:
+      - 8001:1433
+  clientapi:
+    container_name: clientsapi
+    image: ${DOCKER_REGISTRY-}clientsapi
+    build:
+      context: .
+      dockerfile: WebApplication2/Dockerfile
+    networks: 
+      - backend
+    ports:
+      - 8002:8080
+    environment:
+      - DB_HOST=clientsbd
+      - DB_NAME=clients
+      - DB_SA_PASSWORD=Gato__12

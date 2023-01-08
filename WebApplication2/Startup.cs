@@ -38,7 +38,11 @@ namespace WebApplication2
             
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer("server=192.168.0.6; user=sa; database=clients; password=1234;");
+                string dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+                string dbName = Environment.GetEnvironmentVariable("DB_NAME");
+                string dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+                options.UseSqlServer($"server={dbHost}; user=sa; database={dbName}; password={dbPassword};");
+                Console.Write(dbHost + dbName + dbPassword);
             });
             services.AddSwaggerGen(c =>
             {
